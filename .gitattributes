@@ -1,0 +1,4 @@
+# Pin all text files to LF so the working tree
+# runs cleanly on both Windows (Git Bash) and Linux,
+# overriding core.autocrlf on every machine.
+* text=auto eol=lf
