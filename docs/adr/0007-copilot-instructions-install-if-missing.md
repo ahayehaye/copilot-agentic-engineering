@@ -7,10 +7,10 @@
 
 `copilot-instructions-manager.sh` manages the user-global Copilot CLI instructions file: **Source** `copilot-instructions/copilot-instructions.md` → **Target** `${COPILOT_HOME:-~/.copilot}/copilot-instructions.md`. Two properties of this item differ from everything the Shared Library manages today:
 
-- **The Target may be user-authored.** Unlike the pi Manager's global `APPEND_SYSTEM.md` — a file the pi Manager owns and auto-upgrades — `copilot-instructions.md` is a user-global file the user may have written themselves or edited after installation.
+- **The Target may be user-authored.** Unlike a manager-owned global file — one that the manager owns and auto-upgrades — `copilot-instructions.md` is a user-global file the user may have written themselves or edited after installation.
 - **The file carries no version marker.** It is injected verbatim into every prompt, so frontmatter or a version comment would leak into the prompt. The semver lifecycle (extract → compare → gate) has nothing to extract.
 
-The Shared Library's install/upgrade lifecycle is semver-gated, and the pi Manager's take-ownership model auto-upgrades the file it owns. Neither fits this item.
+The Shared Library's install/upgrade lifecycle is semver-gated, and the take-ownership model auto-upgrades the file its manager owns. Neither fits this item.
 
 ## Decision
 
@@ -26,7 +26,7 @@ The Shared Library's install/upgrade lifecycle is semver-gated, and the pi Manag
 ## Considered Options
 
 - **The Shared Library's semver lifecycle.** Rejected — the file carries no version marker (it is injected verbatim into prompts), so there is no version to extract or compare; content-hash versioning in the state dotfile is the only viable versioning.
-- **The pi Manager's take-ownership model (auto-upgrade).** Rejected — the Target may be user-authored, and a wrong clobber of a user-global file is worse than a skipped upgrade. The pi Manager auto-upgrades `APPEND_SYSTEM.md` because it owns that file; it does not own `copilot-instructions.md`.
+- **Take-ownership with auto-upgrade.** Rejected — the Target may be user-authored, and a wrong clobber of a user-global file is worse than a skipped upgrade. A manager that owns its target file auto-upgrades it; this manager does not own `copilot-instructions.md`.
 - **Extending `copilot-agent-manager.sh`.** Rejected — the "warn, never fail" drift posture would corrupt the Agent Manager's install/upgrade counters and `upgrade-all` semantics, which assume a semver-gated lifecycle where a Source older than the Target fails.
 - **Install-if-missing + drift warning + explicit `reinstall`.** Chosen — the manager can only ever add a file the user does not have; every change to an existing file is an explicit user decision.
 
