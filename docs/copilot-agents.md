@@ -8,7 +8,7 @@
 > **Scope and the word "agent".** This page documents the **Copilot Agent** *item type* — the installable `*.agent.md` files managed by the Agent Manager. It does **not** describe the pipeline *roles* (analyst, director, worker) that run the workflow skills. Keep the two senses of "agent" separate:
 >
 > - **Agent (item type):** an installable `*.agent.md` under `copilot-agents/`, deployed to `~/.copilot/agents/`. This page is about these.
-> - **Agent (pipeline role):** the participant role — analyst, director, or worker — that plays out in the workflow. These roles are covered in [workflows/flow-notes.md](workflows/flow-notes.md) and [workflows/three-sizes.md](workflows/three-sizes.md); this page does not describe what they do.
+> - **Agent (pipeline role):** the participant role — analyst, director, or worker — that plays out in the workflow. This page does not describe what they do.
 
 ## Install / upgrade / uninstall
 

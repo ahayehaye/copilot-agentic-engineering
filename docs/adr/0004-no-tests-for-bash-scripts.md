@@ -5,14 +5,14 @@
 
 ## Context
 
-This project contains bash manager scripts (`skill-manager.sh`, `mcp-manager.sh`, `copilot-agent-manager.sh`, `pi-manager.sh`) that are executed via Git Bash on Windows. During the implementation of the pi manager (#95), fixture dry-runs were specified as the verification method — temporary HOME directories with stubbed binaries on PATH, designed to simulate install/upgrade/skip decisions without touching the real system.
+This project contains bash manager scripts (`skill-manager.sh`, `mcp-manager.sh`, `copilot-agent-manager.sh`) that are executed via Git Bash on Windows. During the manager implementation, fixture dry-runs were specified as the verification method — temporary HOME directories with stubbed binaries on PATH, designed to simulate install/upgrade/skip decisions without touching the real system.
 
 Fixture dry-runs proved unworkable in agent execution:
 
 - **PATH manipulation on Windows/Git Bash is fragile** — stubbing external commands requires temp directories, fake binaries, and careful PATH scoping that breaks across tool calls.
 - **Workers hallucinate paths** (e.g., `C:\Users\runneradmin`) when creating temp environments, producing non-recoverable errors.
 - **Each fixture wastes 10+ minutes of agent time** — a single slice that should take 5 minutes of implementation spirals into 30+ minutes of debugging fixture setup.
-- **The setup is single-user and idempotent** — the live acceptance run (#103) covers all real-world scenarios and is sufficient verification.
+- **The setup is single-user and idempotent** — the live acceptance run covers all real-world scenarios and is sufficient verification.
 
 ## Decision
 
@@ -41,4 +41,4 @@ Python code continues to require unit tests as normal.
 - **Positive**: Slices complete in minutes instead of tens of minutes. Agent execution is reliable and predictable.
 - **Positive**: Verification matches how the scripts are actually used — on the real machine, with real tools, against real state.
 - **Negative**: No isolated test environment means verification touches the real system. Mitigated by `--dry-run` modes and idempotent, backup-protected operations.
-- **Neutral**: The live acceptance run (#103 per feature) is the integration test. This is explicit and documented, not implicit.
+- **Neutral**: The live acceptance run (per feature) is the integration test. This is explicit and documented, not implicit.
