@@ -7,7 +7,7 @@
 
 This working tree is shared and checked out on both Windows (via Git Bash) and Linux, and it is entirely text — Markdown, shell, Python, TypeScript, JSON, TOML, and configuration files. No file in the repo is binary or Windows-specific, so every file is subject to the line endings of whatever machine and editor wrote it.
 
-The project already pins shell and Python scripts to LF (`*.sh text eol=lf` and `*.py text eol=lf`, introduced in #126). That rule left every other text extension unprotected: a Markdown, JSON, or TOML file arriving with CRLF from a co-worker's Windows machine would not be normalized, and the shared tree could drift to mixed line endings. Because the tree is shared and rechecked out on machines with different native line endings, "scripts only" was not enough to guarantee a single, consistent line ending everywhere.
+The project already pins shell and Python scripts to LF (`*.sh text eol=lf` and `*.py text eol=lf`, introduced in an earlier change). That rule left every other text extension unprotected: a Markdown, JSON, or TOML file arriving with CRLF from a co-worker's Windows machine would not be normalized, and the shared tree could drift to mixed line endings. Because the tree is shared and rechecked out on machines with different native line endings, "scripts only" was not enough to guarantee a single, consistent line ending everywhere.
 
 ## Decision
 

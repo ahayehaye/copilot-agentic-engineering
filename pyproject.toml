@@ -1,5 +1,5 @@
 [project]
-name = "agentic-software-engineering"
+name = "copilot-agentic-engineering"
 version = "0.1.0"
 description = "Agentic software engineering skills and tooling"
 requires-python = ">=3.11"
