@@ -87,7 +87,7 @@ This repository follows the [Skills Directory file structure spec](https://www.s
 
 ## Importing a vendored skill
 
-The workflow's upstream skills come from [`mattpocock/skills`](https://github.com/mattpocock/skills) and are vendored in-repo under the Skill Manager — `npx skills` is retired for this source ([ADR-0008](adr/0008-vendor-upstream-skills-in-repo.md)). This is the mechanical procedure for a first import and for every re-import, so importing an eighteenth skill is the same steps as the first:
+The workflow's upstream skills come from [`mattpocock/skills`](https://github.com/mattpocock/skills) and are vendored in-repo under the Skill Manager — `npx skills` is retired for this source ([ADR-0008](adr/0008-vendor-upstream-skills-in-repo.md)). This is the mechanical procedure for a first import and for every re-import, so importing a future skill is the same steps as the first:
 
 1. **Copy from a specific upstream commit.** Fetch the skill's directory from `mattpocock/skills` at a specific commit and record that commit's 40-char SHA (e.g. `git rev-parse <ref>` in a clone of the upstream repo).
 2. **Assign the local version.** First import: `version: 1.0.0`. Every re-import or amendment bumps the local monotonic semver — it answers "which copy of this skill is deployed", the manager's only question.
