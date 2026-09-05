@@ -109,9 +109,9 @@ Original (repo-authored) skills carry no provenance block.
 
 ### Standing rinse
 
-The forklift — the bulk refresh that copies the whole upstream skills directory and the agents into this repo — can overwrite this repo's own choices. After every forklift run, re-verify and re-apply:
+The forklift — the bulk refresh that copies the whole upstream skills directory and the agents into this repo — carries a per-skill exclude list, and the unedited `code-review` is on it: the forklift skips that skill, so this repo's own copy is not overwritten. The agents directory still crosses, though, and can overwrite this repo's own choices there. After every forklift run, verify the excluded skill and re-apply the agent wording:
 
-- the unedited `code-review` content — byte-identical to its recorded upstream commit apart from the frontmatter lines — with `vendored: unedited` and its local version intact;
+- the unedited `code-review` — confirm it is still intact, byte-identical to its recorded upstream commit apart from the frontmatter lines, with `vendored: unedited` and its local version intact. The forklift's per-skill exclude list is what keeps it from being overwritten;
 - the `reviewer` agent's parallel wording — it delegates the skill's two axes in parallel to `axis-reviewer` children.
 
 ## Invariants & caveats
