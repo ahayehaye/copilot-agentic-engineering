@@ -109,11 +109,11 @@ Original (repo-authored) skills carry no provenance block.
 
 ### Standing rinse
 
-The forklift — the bulk refresh that copies the whole upstream skills directory and the agents into this repo — carries a per-skill exclude list, and the unedited `code-review` is on it: the forklift skips that skill, so this repo's own copy is not overwritten. The agents directory still crosses, though, and this doc crosses raw. After every forklift run:
+The forklift — the bulk refresh that copies the whole upstream skills directory and the agents into this repo — carries an exclude list, and two items are on it: the unedited `code-review` skill and this doc. The forklift skips both, so neither is overwritten; a re-run is a no-op for everything it touches. The agents directory still crosses, though. After every forklift run:
 
-- the unedited `code-review` — confirm it is still intact: `vendored: unedited` and its local version intact, byte-identical to its recorded upstream commit apart from the frontmatter lines. The forklift's per-skill exclude list is what keeps it from being overwritten;
-- the agents directory — confirm the forklift left it unchanged (`git status` clean for `copilot-agents/`); the host files are mode-neutral per [ADR-0009](adr/0009-host-agents-bind-the-harness.md), so they cross byte-identical;
-- this doc's public-owned edits — re-apply them (the ADR links pointing at this repo's numbering, the count-agnostic import wording, and this section): the doc crosses raw on every run, so this is a standing item.
+- the unedited `code-review` — confirm it is still intact: `vendored: unedited` and its local version intact, byte-identical to its recorded upstream commit apart from the frontmatter lines. The exclude list is what keeps it from being overwritten;
+- this doc — confirm it is still intact (the exclude list keeps it from being overwritten). Improvements made to the private-side copy of this doc do not cross automatically; port them here deliberately when they land;
+- the agents directory — confirm the forklift left it unchanged (`git status` clean for `copilot-agents/`); the host files are mode-neutral per [ADR-0009](adr/0009-host-agents-bind-the-harness.md), so they cross byte-identical.
 
 ## Invariants & caveats
 
