@@ -9,9 +9,7 @@ The `reviewer` Copilot Agent hosts the `code-review` skill. Its file re-stated t
 
 ## Decision
 
-A host agent file must not restate execution semantics the hosted skill prescribes (spawn mode, prompt content). It binds only the harness facts the skill cannot know: the tool that runs the delegation (`task`) and the child agent type (`axis-reviewer`).
-
-The `reviewer` file (0.4.1) delegates the skill's two axes to the `axis-reviewer` agent — one delegation per axis, spawned as the skill prescribes — with the self-contained prompts the skill prescribes. The Code-Review Skill is the single source of truth for how its axes run.
+A host agent file must not restate execution semantics the hosted skill prescribes (spawn mode, prompt content). It binds only the harness facts the skill cannot know: the tool that runs the delegation (`task`) and the child agent type (`axis-reviewer`). The Code-Review Skill is the single source of truth for how its axes run.
 
 ## Considered Options
 
@@ -22,5 +20,6 @@ The `reviewer` file (0.4.1) delegates the skill's two axes to the `axis-reviewer
 
 - **Positive**: The skill is the single source of truth for how its sub-agents run; a per-side skill amendment (the private-side sequential amendment) is host-transparent.
 - **Positive**: The `reviewer` file crosses the forklift byte-identical to the private-side 0.4.1 copy, so a forklift re-run is a no-op for the agents directory.
-- **Positive**: The standing rinse's reviewer-wording item is retired; the rinse scope shrinks to the excluded-skill integrity check, the agents-directory no-op check, and the doc's public-owned edits (amended in [ADR-0008](0008-vendor-upstream-skills-in-repo.md)).
+- **Positive**: The standing rinse's reviewer-wording item is retired; the current rinse scope is recorded in [ADR-0008](0008-vendor-upstream-skills-in-repo.md).
 - **Neutral**: Axis mode is decided per side by which copy of the skill each repo vendors — that is the designed mechanism, not a defect.
+- **Neutral**: The `director`'s `version:` field identifies the forklift copy its body carries; aligning 0.8.2 → 0.8.1 is an alignment to that copy, not a content regression, and deploys via one documented `--reinstall` pass because the manager's version gate refuses downgrades.
