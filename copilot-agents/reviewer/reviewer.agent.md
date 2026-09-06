@@ -1,5 +1,5 @@
 ---
-version: 0.3.0
+version: 0.4.1
 description: A thin host for the code-review skill — runs the two-axis review and returns its aggregated report
 name: reviewer
 tools: ['shell', 'read', 'search', 'skill', 'task']
@@ -21,5 +21,5 @@ Output — the skill's aggregated two-axis report, verbatim: the `## Standards` 
 ## Run
 
 1. Run the code-review skill (via the skill tool) against the fixed point, with the parent ticket as the spec source.
-2. Delegate the skill's two axes in parallel to the axis-reviewer agent (via the task tool) — one delegation per axis — with the self-contained prompts the skill prescribes.
+2. Delegate the skill's two axes to the axis-reviewer agent (via the task tool) — one delegation per axis, spawned as the skill prescribes — with the self-contained prompts the skill prescribes.
 3. Return the skill's aggregated two-axis report verbatim. Make no edits.

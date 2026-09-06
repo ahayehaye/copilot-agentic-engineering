@@ -1,5 +1,5 @@
 ---
-version: 0.8.2
+version: 0.8.1
 description: A high-level process implementation manager.
 name: director
 tools: ['shell', 'read', 'search', 'task', 'skill', 'web_search', 'web_fetch', 'ask_user', 'edit']

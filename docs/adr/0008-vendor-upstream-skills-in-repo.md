@@ -50,4 +50,4 @@ metadata:
 - **Positive**: The manager is untouched — vendored skills flow through the same install/upgrade/backup lifecycle as originals.
 - **Positive**: Attribution survives per-skill copy-out via the bundled MIT license.
 - **Negative**: Re-importing upstream changes is manual work — every re-import or amendment is a deliberate commit with a version bump.
-- **Negative**: The forklift that refreshes the vendored set copies the whole skills directory and the agents, so it can overwrite this repo's own choices; a standing rinse re-verifies and re-applies the unedited `code-review` content and the `reviewer` agent's parallel wording after every forklift run (see the [Skills doc](../skills.md#importing-a-vendored-skill)).
+- **Negative**: The forklift that refreshes the vendored set copies the whole skills directory and the agents, so it can overwrite this repo's own choices; a standing rinse verifies the excluded `code-review` skill is intact, confirms the forklift left the agents directory unchanged, and re-applies the Skills doc's public-owned edits after every forklift run (see the [Skills doc](../skills.md#importing-a-vendored-skill)).
