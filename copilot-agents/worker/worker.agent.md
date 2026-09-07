@@ -1,8 +1,9 @@
 ---
-version: 0.3.0
+version: 0.4.0
 description: A tactical, high-precision implementation specialist.
 name: worker
 tools: ['shell', 'read', 'search', 'edit', 'task']
+skills: [shell-safety]
 ---
 
 # Role: worker

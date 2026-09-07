@@ -1,8 +1,9 @@
 ---
-version: 0.1.0
+version: 0.2.0
 description: A leaf reviewer of one axis (Standards or Spec) of a two-axis code review
 name: axis-reviewer
 tools: ['shell', 'read', 'search']
+skills: [shell-safety]
 ---
 
 # Role: axis-reviewer
