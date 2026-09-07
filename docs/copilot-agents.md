@@ -5,10 +5,10 @@
 `copilot-agent-manager.sh` is the **Agent Manager** for **Copilot Agents** — it installs, upgrades, and uninstalls them, moving items from the **Source** `copilot-agents/` directory to the **Target** `~/.copilot/agents/` using the shared version-gated lifecycle. It is a thin wrapper that sources the [Shared Library](adr/0001-shared-manager-library.md); see the [glossary](../CONTEXT.md#glossary) for the full vocabulary (Copilot Agent, Agent Manager, Manager, Source, Target, Version, Backup, Upgrade All).
 
 > [!NOTE]
-> **Scope and the word "agent".** This page documents the **Copilot Agent** *item type* — the installable `*.agent.md` files managed by the Agent Manager. It does **not** describe the pipeline *roles* (analyst, director, worker) that run the workflow skills. Keep the two senses of "agent" separate:
+> **Scope and the word "agent".** This page documents the **Copilot Agent** *item type* — the installable `*.agent.md` files managed by the Agent Manager. It does **not** describe the pipeline *roles* (analyst, director, implementer, worker, reviewer, axis-reviewer, verifier — plus scout, a utility role outside the workflow) that run the workflow skills. Keep the two senses of "agent" separate:
 >
 > - **Agent (item type):** an installable `*.agent.md` under `copilot-agents/`, deployed to `~/.copilot/agents/`. This page is about these.
-> - **Agent (pipeline role):** the participant role — analyst, director, or worker — that plays out in the workflow. This page does not describe what they do.
+> - **Agent (pipeline role):** the participant role — analyst, director, implementer, worker, reviewer, axis-reviewer, or verifier — that plays out in the workflow, plus scout, a utility role outside the workflow. This page does not describe what they do.
 
 ## Install / upgrade / uninstall
 
