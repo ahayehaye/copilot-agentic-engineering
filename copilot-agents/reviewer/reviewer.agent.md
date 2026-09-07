@@ -1,8 +1,9 @@
 ---
-version: 0.4.1
+version: 0.5.0
 description: A thin host for the code-review skill — runs the two-axis review and returns its aggregated report
 name: reviewer
 tools: ['shell', 'read', 'search', 'skill', 'task']
+skills: [shell-safety]
 ---
 
 # Role: reviewer

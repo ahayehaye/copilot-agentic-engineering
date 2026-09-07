@@ -70,6 +70,8 @@ The **Copilot Agent** item contract (discovery rules a contributor must follow):
    ---
    ```
 
+**Optional `skills` key.** A `skills:` frontmatter key preloads the named skills into the subagent's prompt context — the skill text is present in the subagent's first message (see **Skill Preloading** in the [glossary](../CONTEXT.md#glossary)). It must be written in YAML list form (`skills: [shell-safety]`); the CSV string form (`skills: shell-safety, other`) is silently discarded — the entire agent profile fails to load. See [ADR-0010](adr/0010-shell-safety-rules-live-in-the-skill.md).
+
 **Discovery rules.** The Agent Manager discovers agents by listing directories under the **Source** `copilot-agents/` directory that contain a `*.agent.md` file, reads the `version:` field for the **Version**, and deploys that `*.agent.md` file to the **Target** `~/.copilot/agents/<name>.agent.md`.
 
 ## Invariants & caveats

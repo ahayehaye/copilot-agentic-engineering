@@ -8,18 +8,7 @@ Issues live in this repo's GitHub Issues. See `docs/agents/issue-tracker.md`.
 
 Single-context repo — one `CONTEXT.md` and `docs/adr/` at the root. See `docs/agents/domain.md`.
 
-## Bash
-
-- Use safe bash formulations so a command never hits the destructive-command guard.
-- Delete an empty directory with `rmdir`.
-- Delete a single file with `rm <file>` and no recursive flags.
-- Never use `sudo`.
-- Never use `chmod` or `chown` with `777`.
-- A recursive delete is only allowed when it is truly unavoidable.
-- For an unavoidable recursive delete, delete the contents one file at a time, then run `rmdir` on the directory.
-- When the contents cannot be recreated, back the target up to a sibling file first.
-- Do not substitute another command (for example `find -delete`) to bypass the guard.
-- If a destructive command cannot be made safe, report it to the user instead of running it.
+When doing potentially risky or dangerous actions with the shell, always consult the shell-safety skill.
 
 ## Testing
 

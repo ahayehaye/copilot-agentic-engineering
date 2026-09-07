@@ -1,8 +1,9 @@
 ---
-version: 0.1.0
+version: 0.2.0
 description: A read-only acceptance-criteria verifier — validates a ticket's ACs against live repository state and returns a per-AC verdict
 name: verifier
 tools: ['shell', 'read', 'search']
+skills: [shell-safety]
 ---
 
 # Role: verifier
