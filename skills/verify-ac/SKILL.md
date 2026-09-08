@@ -1,7 +1,7 @@
 ---
 name: verify-ac
 description: Verify a parent ticket's slice acceptance criteria inline against live repository state and record the verified state on the tracker. Use after /implement completes with unverified slices, or on re-entry with unchecked AC boxes.
-version: 1.0.0
+version: 1.1.1
 ---
 
 # verify-ac
@@ -10,12 +10,13 @@ Input: the parent ticket number, nothing else — `/verify-ac #<parent>`. Never 
 
 ## 1. Discover the slices (union)
 
-Run both discovery mechanisms and take the union:
+Run all three discovery mechanisms and take the union, deduplicated, in number order:
 
-- Sub-issues endpoint: `gh api repos/<owner>/<repo>/issues/<parent>/sub_issues`. A 404 or empty result is fine — the other mechanism still runs.
-- Body search: `gh issue list --state open --json number,title,body --jq '[.[] | select(.body | contains("Part of #<parent>")) | .number]'`.
+- Sub-issues endpoint: `gh api repos/<owner>/<repo>/issues/<parent>/sub_issues`. A 404 or empty result is fine — the other mechanisms still run.
+- Body search 1: `gh issue list --state open --json number,title,body --jq '[.[] | select(.body | contains("Part of #<parent>")) | .number]'`.
+- Body search 2: a body search for the `## Parent` section format — a `## Parent` heading line, one or more whitespace lines, then a line that is exactly `#<parent>`: `gh issue list --state open --json number,title,body --jq '[.[] | select(.body | test("(?m)^## Parent\\s*\\n+\\s*#<parent>\\s*$")) | .number]'`.
 
-A parent with no discoverable slices is a contradiction to surface, not an empty success: stop and report it.
+The body searches keep their open-state filter. A parent with no discoverable slices is a contradiction to surface, not an empty success: stop and report it, verify nothing (not against the spec), record nothing, and wait for user direction.
 
 ## 2. Per slice: validate the ACs
 
