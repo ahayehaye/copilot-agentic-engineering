@@ -109,7 +109,7 @@ Original (repo-authored) skills carry no provenance block.
 
 ### Standing rinse
 
-The forklift — the bulk refresh that copies the whole upstream skills directory and the agents into this repo — carries an exclude list, and two items are on it: the unedited `code-review` skill and this doc. The forklift skips both, so neither is overwritten; a re-run is a no-op for everything it touches. The agents directory still crosses, though. After every forklift run:
+The forklift — the bulk refresh that copies the whole upstream skills directory and the agents into this repo — carries an exclude list, and two items are on it: the unedited `code-review` skill and this doc. The forklift skips both, so neither is overwritten; a re-run is a no-op for everything it touches. Everything else in the skills directory crosses — including `verify-ac`, which is private-repo-owned: the private copy is the source of truth, and updates arrive only via forklift runs, never local edits ([#42](https://github.com/ahayehaye/copilot-agentic-engineering/issues/42)). The agents directory still crosses, though. After every forklift run:
 
 - the unedited `code-review` — confirm it is still intact: `vendored: unedited` and its local version intact, byte-identical to its recorded upstream commit apart from the frontmatter lines. The exclude list is what keeps it from being overwritten;
 - this doc — confirm it is still intact (the exclude list keeps it from being overwritten). Improvements made to the private-side copy of this doc do not cross automatically; port them here deliberately when they land;
