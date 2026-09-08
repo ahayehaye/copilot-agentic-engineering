@@ -34,7 +34,7 @@ The self-run flow accepts the loss of **fresh-context adversariality**: the same
 
 ## Consequences
 
-- **Positive**: The self-run flow has a durable, machine-detectable verified state — a cleared session reconstructs "every slice AC-verified" from the checked boxes alone, and `/code-review` is always named only after verification.
+- **Positive**: The self-run flow has a durable, machine-detectable verified state — a cleared session reconstructs "every AC box checked" from the checked boxes alone, and `/code-review` is always named only after verification.
 - **Positive**: No per-slice dispatch cost in the self-run flow — the verification runs inline in the user's session.
 - **Negative**: The self-run flow loses the fresh-context adversariality the ADR-0002 verifier provides in the director flow. Accepted and mitigated (ACs fetched verbatim from the ticket; `/code-review` as the fresh-context gate).
 - **Neutral**: The flows are now asymmetric on purpose — the self-run flow verifies inline, the director flow dispatches the verifier. This ADR records the asymmetry so it is explained, not puzzling.
