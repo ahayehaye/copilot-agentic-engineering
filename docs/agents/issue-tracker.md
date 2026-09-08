@@ -33,6 +33,20 @@ Create a GitHub issue.
 
 Run `gh issue view <number> --comments`.
 
+## Slice discovery
+
+Used by `/verify-ac` (parent mode). The mechanisms below are ported from the skill's "Tracker binding: GitHub (example)" appendix; the skill's protocol owns how their results are combined.
+
+- **Sub-issues endpoint**: `gh api repos/<owner>/<repo>/issues/<parent>/sub_issues`. A 404 or empty result is fine — the other mechanisms still run.
+- **Body search 1** — `Part of #<parent>`: `gh issue list --state open --json number,title,body --jq '[.[] | select(.body | contains("Part of #<parent>")) | .number]'`.
+- **Body search 2** — the `## Parent` section format (a `## Parent` heading line, one or more whitespace lines, then a line that is exactly `#<parent>`): `gh issue list --state open --json number,title,body --jq '[.[] | select(.body | test("(?m)^## Parent\\s*\\n+\\s*#<parent>\\s*$")) | .number]'`.
+
+The body searches keep their open-state filter.
+
+## Box-checking
+
+Used by `/verify-ac` after a slice's ACs all pass. Replace `- [ ]` with `- [x]` in the ticket body and PATCH it via `gh api -X PATCH --input body.json` — never `gh api -f body=` (it flattens newlines).
+
 ## Wayfinding operations
 
 Used by `/wayfinder`. The **map** is a single issue with **child** issues as tickets.

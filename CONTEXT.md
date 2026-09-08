@@ -33,6 +33,7 @@ Reusable agent skills and MCP servers for coding assistants, managed locally fro
 | **Topic Branch** | A git branch for implementing a parent ticket, named with Conventional Commits: `<type>/#<number>-<short-slug>` (e.g. `feat/#100-add-cool-new-thing`); the `#` is intentional. The analyst suggests one at the end of `/to-tickets`; the user creates it. |
 | **Vertical Slice** | A single unit of implementation work (a.k.a. tracer bullet) that cuts a narrow but complete path through every layer, sized to fit in one fresh context window. The unit the director dispatches to a worker. |
 | **Blocking Edge** | A dependency between two tickets: one ticket blocks another until the blocker is complete. Defined by `/to-tickets`; its portable form is a `Blocked by:` line in the blocked ticket's body, which tracker-native blocking links may mirror. |
+| **Tracker binding** | The concrete set of tracker commands a skill's protocol delegates to — defined per project in `docs/agents/issue-tracker.md`, with the skill carrying a documented example of one binding (GitHub). |
 | **Logic Error** | A failure class: a bug in the implementation code. Retryable once with the error logs appended to the worker's context. |
 | **Context Error** | A failure class: the vertical slice itself is the problem — too large for one context window, or its task context is ambiguous or inconsistent. A retry cannot fix it; it requires re-planning or re-slicing. |
 
