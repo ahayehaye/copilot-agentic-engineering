@@ -257,15 +257,27 @@ ensure_dirs() {
 
 # ─── Install ──────────────────────────────────────────────────────────────────
 
+# Directory copy used by do_install/do_upgrade. Wrappers may override this
+# function to filter files. Called as `copy_dir --dry-run <src> <tgt>`
+# from the dry-run branches; the default implementation maps that onto
+# `cp -r --dry-run` so the preview matches the real copy.
+copy_dir() {
+  if [[ "${1:-}" == "--dry-run" ]]; then
+    cp -r --dry-run "$2" "$3"
+  else
+    cp -r "$1" "$2"
+  fi
+}
+
 do_install() {
   local item="$1" src="$2" tgt="$3" ver="$4"
   ensure_dirs
   if [[ $DRY_RUN -eq 1 ]]; then
     echo -e "  ${BLUE}[dry-run]${RESET} Would install $item $ver → $tgt"
-    cp -r --dry-run "$src" "$tgt" 2>/dev/null || true
+    copy_dir --dry-run "$src" "$tgt" 2>/dev/null || true
     echo -e "${GREEN}✓${RESET} $item ${CYAN}$ver${RESET} installed (dry-run)"
   else
-    cp -r "$src" "$tgt"
+    copy_dir "$src" "$tgt"
     echo -e "${GREEN}✓${RESET} $item ${CYAN}$ver${RESET} installed"
   fi
 }
@@ -282,11 +294,12 @@ do_upgrade() {
   if [[ $DRY_RUN -eq 1 ]]; then
     echo -e "  ${BLUE}[dry-run]${RESET} Would backup $tgt → $backup_path"
     echo -e "  ${BLUE}[dry-run]${RESET} Would copy $src → $tgt"
+    copy_dir --dry-run "$src" "$tgt" 2>/dev/null || true
     echo -e "${GREEN}✓${RESET} $item ${CYAN}$tgt_ver${RESET} → ${CYAN}$src_ver${RESET} upgraded (dry-run)"
   else
     cp -r "$tgt" "$backup_path"
     rm -rf "$tgt"
-    cp -r "$src" "$tgt" || {
+    copy_dir "$src" "$tgt" || {
       echo -e "${RED}Error: Install failed, restoring from backup${RESET}"
       rm -rf "$tgt"
       cp -r "$backup_path" "$tgt"

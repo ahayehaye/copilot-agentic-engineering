@@ -44,6 +44,30 @@ Used by `/wayfinder`. The **map** is a single issue with **child** issues as tic
 - **Claim**: `gh issue edit <n> --add-assignee @me` — the session's first write.
 - **Resolve**: `gh issue comment <n> --body "<answer>"`, then `gh issue close <n>`, then append a context pointer (gist + link) to the map's Decisions-so-far.
 
+## Sub-issues
+
+**List a parent's sub-issues**
+
+```bash
+gh api repos/ahayehaye/copilot-agentic-engineering/issues/<parent>/sub_issues
+```
+
+**Create a sub-issue link**
+
+The REST `POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues` endpoint requires the sub-issue's **database id**, not the issue number. Get the id first, then POST a JSON body with `sub_issue_id` as an integer.
+
+```bash
+# database id, not #number
+SUB_ID=$(gh api repos/ahayehaye/copilot-agentic-engineering/issues/<sub-number> --jq .id)
+
+jq -n --argjson id "$SUB_ID" '{sub_issue_id: $id}' > /tmp/sub-issue-payload.json
+gh api -X POST repos/ahayehaye/copilot-agentic-engineering/issues/<parent>/sub_issues --input /tmp/sub-issue-payload.json
+```
+
+Use `replace_parent: true` in the JSON body to move a sub-issue to a new parent.
+
+Where sub-issues are not available, the body-fallback mechanisms below apply.
+
 ## Slice discovery
 
 Used by any workflow that needs a parent's vertical slices — `verify-ac` (parent mode), `/implement` (dependency graph), and the director's slice loop. Run **all three** mechanisms below and take the union, deduplicated, in number order — the strict-union rule is the consumer's; the priority order below is readability only. A 404 or empty result from any mechanism is fine — the other mechanisms still run.
@@ -84,5 +108,7 @@ gh label create vertical-slice --description 'Vertical slice (aka "tracer bullet
 ```
 
 **Label application rule:** a spec published by `/to-spec` is created with the `spec` label; a slice published by `/to-tickets` is created with the `vertical-slice` label.
+
+**Precedence:** the label application rule takes precedence over any skill instruction to apply a different default label (for example `ready-for-agent`); `spec` and `vertical-slice` are always applied as stated, and extra triage labels may be added on top.
 
 Wayfinder labels live in the wayfinding section.

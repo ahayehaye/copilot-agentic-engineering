@@ -1,5 +1,5 @@
 ---
-version: 0.8.6
+version: 0.9.0
 description: A high-level process implementation manager.
 name: director
 tools: ['shell', 'read', 'search', 'task', 'skill', 'web_search', 'web_fetch', 'ask_user', 'edit']
@@ -79,8 +79,9 @@ Transaction rules:
 
 - **DISPATCH goes first.** The DISPATCH append is the first tool call of any turn that dispatches (DISPATCH → dispatch call → ACK); the dispatch call comes after it.
 - **ACK only on evidence.** ACK is written only in the turn that received the `task` result. For a background `task` dispatch, the ACK is the `task` tool result itself — the completion notification is not a transaction event. An ACK whose status is `result arrived` without a `task` result in that turn is a violation — append the `VIOLATION` line and re-establish state with tool calls.
+- **Status turn after a background dispatch.** After a background `task` dispatch and its ACK, the next turn ends with a user-facing status message — no tool calls — until a completion notification or a `task` result arrives.
 - **One DISPATCH per dispatch.** The checkpoint grep before a dispatch must show no existing DISPATCH for it; if one already exists, do not append another — proceed directly to the dispatch call if it has not happened, or resolve the pair as an unacked dispatch if it has.
-- **Reconcile at checkpoints.** Run `grep -E "^(DISPATCH|ACK|VIOLATION) " ` on the journal at exactly three checkpoints — session start/resume, before every dispatch, before any turn that claims worker state — and never a whole-journal read. Every DISPATCH without a matching ACK is an **unacked dispatch** — a suspicion, not a fact. Resolve it before anything else, in this order:
+- **Reconcile at checkpoints.** Run `grep -E "^(DISPATCH|ACK|VIOLATION) " ` on the journal at exactly three checkpoints — session start/resume, as a tool call in the same assistant message as the dispatch call, before any turn that claims worker state — and never a whole-journal read. Every DISPATCH without a matching ACK is an **unacked dispatch** — a suspicion, not a fact. Resolve it before anything else, in this order:
     1. Check this session's tool results for the dispatch result — found → a bookkeeping failure: write the ACK now, journal a decision entry, and never re-dispatch.
     2. Not found (including resumed sessions) → check repository state and ticket comments — work exists → journal the resolution and never re-dispatch; no work → append the `VIOLATION` line, journal the finding, and re-dispatch.
     The tool-results check comes first.

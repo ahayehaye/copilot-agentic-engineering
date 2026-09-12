@@ -6,13 +6,14 @@ version: 1.2.0
 
 # verify-ac
 
-Input: a ticket number, nothing else — `/verify-ac #<ticket>`. Two input forms, disambiguated by an explicit rule:
+Input: a ticket number, nothing else — `/verify-ac #<ticket>`. Classification is discovery-driven:
 
 1. Fetch the input ticket first.
-2. Its body carries an "Acceptance criteria" checklist → **slice mode**: verify that one ticket.
-3. Otherwise → **parent mode**: discover its slices and verify them all.
+2. Run slice discovery using all mechanisms defined in `docs/agents/issue-tracker.md`. Take the strict union, deduplicated, in number order.
+3. If the union is non-empty → **parent mode**: verify every discoverable slice. If the input ticket itself carries an "Acceptance criteria" checklist, verify those parent ACs in the same run.
+4. If the union is empty → **slice mode**: verify the input ticket alone. If the ticket carries an Acceptance criteria checklist, verify it; otherwise report "no AC checklist found" and stop.
 
-No override flag: a misclassification lands on the safe hard-stop (empty discovery), never on a wrong write. This matches the repo's ticket convention — specs carry no AC boxes; slices do.
+No override flag is needed; discovery result is the ground truth for parent vs slice. The presence of an Acceptance criteria checklist on the input ticket does not by itself force slice mode. A parent may document its own scope ACs and still have children. This tolerates the repo's common convention where specs often carry no AC boxes, while allowing parents to have ACs alongside slices.
 
 Every tracker operation in this protocol — ticket fetch, slice discovery, comment posting, box-checking, parent summary — is an operation defined by the project's issue-tracker doc at `docs/agents/issue-tracker.md`, read at run time. The protocol names no tracker command as a requirement; the concrete commands come from that doc.
 
@@ -37,13 +38,15 @@ For each slice in the union, in number order:
 - If **every** AC in the slice passes: check the slice's AC checkboxes in the ticket body (`- [ ]` → `- [x]`).
 - If any AC fails: leave the boxes unchecked and report the failure in-session.
 
-### 4. Parent summary
+### 4. Parent summary and optional parent AC verification
 
-Only when **every slice passes**: post one summary comment on the parent — the slice count and the commit under test (`git rev-parse HEAD`). On any failure: no parent summary; the failed ACs are already reported in-session.
+If the parent ticket itself carries an Acceptance criteria checklist, verify those parent ACs against live repository state in the same run, post per-AC comments on the parent, and check the parent's boxes on all-pass.
+
+Only when **every slice passes** and, if present, every parent AC passes: post one summary comment on the parent — the slice count, parent AC result, and the commit under test (`git rev-parse HEAD`). On any failure: no parent summary; the failed ACs are already reported in-session.
 
 ## Slice mode
 
-Run parent mode step 2 on the one ticket, then record the result exactly as in parent mode step 3: one per-AC comment; on all-pass, check the boxes; on any failure, leave the boxes unchecked and report in-session. No discovery, no parent summary — the parent summary is a parent-run artifact.
+Run parent mode step 2 on the one ticket, then record the result exactly as in parent mode step 3: one per-AC comment; on all-pass, check the boxes; on any failure, leave the boxes unchecked and report in-session. No discovery is performed in slice mode — the parent summary is a parent-run artifact.
 
 ## Re-runs
 
@@ -52,6 +55,16 @@ Safe by construction: checking an already-checked box is a no-op, and comments a
 ## Tracker binding: GitHub (example)
 
 A documented example of one binding — the concrete `gh` commands for a project whose issue-tracker doc is GitHub. Adding another binding (GitLab, local markdown, ...) means appending a section, not editing the protocol.
+
+- **Sub-issues**
+  - **List a parent's sub-issues**: `gh api repos/<owner>/<repo>/issues/<parent>/sub_issues`. A 404 or empty result is fine — the other mechanisms still run.
+  - **Create a sub-issue link**: the REST `POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues` endpoint requires the sub-issue's **database id**, not the issue number. Get the id first, then POST a JSON body with `sub_issue_id` as an integer.
+    ```bash
+    SUB_ID=$(gh api repos/<owner>/<repo>/issues/<sub-number> --jq .id)
+    jq -n --argjson id "$SUB_ID" '{sub_issue_id: $id}' > /tmp/sub-issue-payload.json
+    gh api -X POST repos/<owner>/<repo>/issues/<parent>/sub_issues --input /tmp/sub-issue-payload.json
+    ```
+    Use `replace_parent: true` in the JSON body to move a sub-issue to a new parent.
 
 - **Discover the slices** — the three mechanisms below; run all of them and combine the results per the protocol's union rule:
   - Sub-issues endpoint: `gh api repos/<owner>/<repo>/issues/<parent>/sub_issues`. A 404 or empty result is fine — the other mechanisms still run.
