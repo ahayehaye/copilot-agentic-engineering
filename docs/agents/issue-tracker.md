@@ -85,4 +85,6 @@ gh label create vertical-slice --description 'Vertical slice (aka "tracer bullet
 
 **Label application rule:** a spec published by `/to-spec` is created with the `spec` label; a slice published by `/to-tickets` is created with the `vertical-slice` label.
 
+**Precedence:** the label application rule takes precedence over any skill instruction to apply a different default label (for example `ready-for-agent`); `spec` and `vertical-slice` are always applied as stated, and extra triage labels may be added on top.
+
 Wayfinder labels live in the wayfinding section.
