@@ -1,7 +1,7 @@
 ---
 name: verify-ac
 description: Verify a ticket's acceptance criteria inline against live repository state and record the verified state on the tracker. Accepts a parent ticket (discovers and verifies every slice, parent summary on all-pass) or a single slice ticket (verifies that one ticket only). Use after /implement completes with unverified slices, or on re-entry with unchecked AC boxes.
-version: 1.2.0
+version: 1.3.0
 ---
 
 # verify-ac
@@ -57,7 +57,6 @@ Safe by construction: checking an already-checked box is a no-op, and comments a
 A documented example of one binding — the concrete `gh` commands for a project whose issue-tracker doc is GitHub. Adding another binding (GitLab, local markdown, ...) means appending a section, not editing the protocol.
 
 - **Sub-issues**
-  - **List a parent's sub-issues**: `gh api repos/<owner>/<repo>/issues/<parent>/sub_issues`. A 404 or empty result is fine — the other mechanisms still run.
   - **Create a sub-issue link**: the REST `POST /repos/{owner}/{repo}/issues/{issue_number}/sub_issues` endpoint requires the sub-issue's **database id**, not the issue number. Get the id first, then POST a JSON body with `sub_issue_id` as an integer.
     ```bash
     SUB_ID=$(gh api repos/<owner>/<repo>/issues/<sub-number> --jq .id)

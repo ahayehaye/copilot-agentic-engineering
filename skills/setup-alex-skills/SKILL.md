@@ -1,7 +1,7 @@
 ---
 name: setup-alex-skills
 description: "Enhances a repo already set up by /setup-matt-pocock-skills so the tracker-dependent workflow skills (notably verify-ac) work fully: adds slice discovery, body edit, and the standard label taxonomy to the GitHub-flavored tracker doc, creates the standard labels on the tracker, and enforces the label rule over the skills' ready-for-agent default with a marker-wrapped label-rule block in the target file (AGENTS.md or CLAUDE.md). Run after /setup-matt-pocock-skills; v1 supports the GitHub flavor only."
-version: 1.1.2
+version: 1.2.0
 ---
 
 # Setup Alex Skills
@@ -38,7 +38,7 @@ Detect the tracker flavor from `docs/agents/issue-tracker.md`:
 
 If the flavor is **GitHub**, continue — the seed for the GitHub flavor is the template files `issue-tracker-github.md` and `agents-md-github.md` in this skill's directory (see [Seed: the GitHub enhancement](#seed-the-github-enhancement) below). Otherwise, stop and say:
 
-> `/setup-alex-skills` v1 supports the GitHub flavor only. This repo's tracker is <flavor>. Azure DevOps support is tracked in ahayehaye/agentic-software-engineering#305; GitLab and local markdown are future flavors.
+> `/setup-alex-skills` v1 supports the GitHub flavor only. This repo's tracker is <flavor>. Azure DevOps support is tracked upstream; GitLab and local markdown are future flavors.
 
 No partial writes: do not draft or write any part of the enhancement for an unsupported flavor.
 
@@ -48,7 +48,7 @@ No partial writes: do not draft or write any part of the enhancement for an unsu
 
 - Read `docs/agents/issue-tracker.md` in full — every section.
 - For each of the four enhancements (slice discovery, body edit, label taxonomy, target-file label rule), check the target surface: present? missing? present but drifted (user edits)?
-- For the label-rule block, check the target file: is there a block between the `<!-- alex-skills:label-rule -->` and `<!-- /alex-skills:label-rule -->` markers, and does it match the template [agents-md-github.md](./agents-md-github.md)?
+- For the label-rule block, check the target file: is there a block between the `<!-- setup-alex-skills:label-rule -->` and `<!-- /setup-alex-skills:label-rule -->` markers, and does it match the template [agents-md-github.md](./agents-md-github.md)? Also check for legacy `<!-- alex-skills:label-rule -->` / `<!-- /alex-skills:label-rule -->` markers (pre-1.2.0 installs) — their presence is a migration case, not a missing block.
 - Check the tracker's label state: `gh label list --json name,description` — do `spec` and `vertical-slice` exist, and with what descriptions?
 
 ### 2. Present findings and ask
@@ -72,7 +72,8 @@ Let them edit before writing.
 ### 4. Write
 
 - Write the enhanced `docs/agents/issue-tracker.md`.
-- Edit the target file idempotently: if the marked block (`<!-- alex-skills:label-rule -->` … `<!-- /alex-skills:label-rule -->`) is present, replace it in place with the block from [agents-md-github.md](./agents-md-github.md); if absent, insert it inside the `### Issue tracker` subsection of the `## Agent skills` block, adding the subsection when missing. Touch nothing else in the file.
+- Edit the target file idempotently: if the marked block (`<!-- setup-alex-skills:label-rule -->` … `<!-- /setup-alex-skills:label-rule -->`) is present, replace it in place with the block from [agents-md-github.md](./agents-md-github.md); if absent, insert it inside the `### Issue tracker` subsection of the `## Agent skills` block, adding the subsection when missing. Touch nothing else in the file.
+- Migrate legacy markers: if the target file carries the legacy `<!-- alex-skills:label-rule -->` / `<!-- /alex-skills:label-rule -->` markers, replace them in place with the `setup-alex-skills:label-rule` markers — no fresh insertion, no orphaned block.
 - Create the missing labels — only the missing ones (idempotent; never create a duplicate) — with the label-list and label-create command block in the "Ticket labels" section of the GitHub-flavor template, [issue-tracker-github.md](./issue-tracker-github.md), resolved relative to the skill's own directory (source dir or installed shared dir), per the [Seed: the GitHub enhancement](#seed-the-github-enhancement) section.
 
 ### 5. Done
