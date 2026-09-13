@@ -23,3 +23,5 @@ A host agent file must not restate execution semantics the hosted skill prescrib
 - **Positive**: The standing rinse's reviewer-wording item is retired; the current rinse scope is recorded in [ADR-0008](0008-vendor-upstream-skills-in-repo.md).
 - **Neutral**: Axis mode is decided per side by which copy of the skill each repo vendors — that is the designed mechanism, not a defect.
 - **Neutral**: The `director`'s `version:` field identifies the forklift copy its body carries; aligning 0.8.2 → 0.8.1 is an alignment to that copy, not a content regression, and deploys via one documented `--reinstall` pass because the manager's version gate refuses downgrades.
+
+**Superseded in part (#70).** The standing-rinse agents-directory check was refined in the [Skills doc](../skills.md#standing-rinse): the "no-op for the agents directory" consequence applies to host files only. The private-repo-owned workflow agents (director, implementer) legitimately cross the forklift with version bumps; any other agents-directory change is a rinse item.
