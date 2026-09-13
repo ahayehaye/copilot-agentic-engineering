@@ -51,3 +51,5 @@ metadata:
 - **Positive**: Attribution survives per-skill copy-out via the bundled MIT license.
 - **Negative**: Re-importing upstream changes is manual work — every re-import or amendment is a deliberate commit with a version bump.
 - **Negative**: The forklift that refreshes the vendored set copies the whole skills directory and the agents, so it can overwrite this repo's own choices; a per-item exclude list protects the unedited `code-review` skill and the Skills doc, and a standing rinse verifies after every forklift run that both exclusions held and that the forklift left the agents directory unchanged (see the [Skills doc](../skills.md#importing-a-vendored-skill)).
+
+**Superseded in part (#70).** The standing-rinse agents-directory check was refined in the [Skills doc](../skills.md#standing-rinse): the "agents directory unchanged" consequence applies to host files only. The private-repo-owned workflow agents (director, implementer) legitimately cross the forklift with version bumps; any other agents-directory change is a rinse item.

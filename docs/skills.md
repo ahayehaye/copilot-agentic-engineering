@@ -113,7 +113,7 @@ The forklift — the bulk refresh that copies the whole upstream skills director
 
 - the unedited `code-review` — confirm it is still intact: `vendored: unedited` and its local version intact, byte-identical to its recorded upstream commit apart from the frontmatter lines. The exclude list is what keeps it from being overwritten;
 - this doc — confirm it is still intact (the exclude list keeps it from being overwritten). Improvements made to the private-side copy of this doc do not cross automatically; port them here deliberately when they land;
-- the agents directory — confirm the forklift left it unchanged (`git status` clean for `copilot-agents/`); the host files are mode-neutral per [ADR-0009](adr/0009-host-agents-bind-the-harness.md), so they cross byte-identical.
+- the agents directory — confirm the crossing is only what it should be: the host files are mode-neutral per [ADR-0009](adr/0009-host-agents-bind-the-harness.md), so they cross byte-identical; the private-repo-owned workflow agents (director, implementer) legitimately cross with version bumps. Anything else changed is a rinse item.
 
 ## Invariants & caveats
 
