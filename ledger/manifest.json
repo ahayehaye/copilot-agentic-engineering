@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "files": [
+    "AGENTS.md",
+    "CONTEXT.md",
+    ".gitignore",
+    "docs/agents/issue-tracker.md",
+    "docs/agents/domain.md",
+    "docs/getting-started.md",
+    "docs/workflows.md",
+    "tickets/engineering/INDEX.md",
+    "tickets/research/INDEX.md",
+    "research/README.md",
+    "research/index.md",
+    "memories/README.md",
+    "memories/index.md",
+    "skills/remember/SKILL.md",
+    "agents/ticket-ledger.md"
+  ],
+  "skill_check_list": [
+    "grill-with-docs",
+    "plan-from-docs",
+    "to-spec",
+    "to-tickets",
+    "implement",
+    "verify-ac",
+    "research",
+    "ado-boards",
+    "shell-safety"
+  ]
+}

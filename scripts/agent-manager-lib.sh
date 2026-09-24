@@ -258,7 +258,8 @@ ensure_dirs() {
 # ─── Install ──────────────────────────────────────────────────────────────────
 
 # Directory copy used by do_install/do_upgrade. Wrappers may override this
-# function to filter files. Called as `copy_dir --dry-run <src> <tgt>`
+# function to filter files (pi-manager excludes test files from the
+# extensions deployment copy). Called as `copy_dir --dry-run <src> <tgt>`
 # from the dry-run branches; the default implementation maps that onto
 # `cp -r --dry-run` so the preview matches the real copy.
 copy_dir() {

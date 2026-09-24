@@ -17,5 +17,6 @@ When doing potentially risky or dangerous actions with the shell, always consult
 ## Testing
 
 - Unit tests for Python code are expected.
+- TypeScript: test the pure module directly with Node's built-in test runner — `node --test <file>.test.ts` (type stripping, no package manifest, no dependencies, no build step). Requires Node >= 23.6. Example: `some-module/decision.test.ts` (a pure module beside the code under test).
 - Do not write tests for bash scripts, anywhere in this repo.
 - **Do not attempt fixture dry-runs for bash scripts** (temporary HOME, stubbed binaries, fake PATH). These are unreliable in agent execution — PATH manipulation on Windows/Git Bash is fragile, workers hallucinate paths, and each fixture wastes 10+ minutes. Verify bash scripts with `bash -n` (syntax), `bash -x` (trace on the real machine), and live acceptance runs instead.
