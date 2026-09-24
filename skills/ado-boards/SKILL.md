@@ -21,7 +21,7 @@ Operate on Azure DevOps work items through the Azure CLI. `az boards` lives in t
 
 End-to-end checklist for onboarding a repo to ADO:
 
-1. **Machine** — az CLI + `azure-devops` extension installed system-wide; the user authenticated via `az devops login` or the `AZURE_DEVOPS_EXT_PAT` environment variable.
+1. **Machine** — az CLI + `azure-devops` extension installed system-wide via this repo's `install-az-cli.sh`; the user authenticated via `az devops login` or the `AZURE_DEVOPS_EXT_PAT` environment variable.
 2. **Repo** — the repo's tracker doc gains the ADO section below (binding data only).
 3. **Optional glossary** — add ADO-specific glossary entries (e.g. "story") to the target repo's `CONTEXT.md` if the repo adopts them.
 4. **Verify** — from a session in the repo, run one live read-only query (e.g. "my open items") and confirm the org resolves from the tracker doc without asking.
