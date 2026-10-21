@@ -25,3 +25,5 @@ A host agent file must not restate execution semantics the hosted skill prescrib
 - **Neutral**: The `director`'s `version:` field identifies the forklift copy its body carries; aligning 0.8.2 → 0.8.1 is an alignment to that copy, not a content regression, and deploys via one documented `--reinstall` pass because the manager's version gate refuses downgrades.
 
 **Superseded in part (#70).** The standing-rinse agents-directory check was refined in the [Skills doc](../skills.md#standing-rinse): the "no-op for the agents directory" consequence applies to host files only. The private-repo-owned workflow agents (director, implementer) legitimately cross the forklift with version bumps; any other agents-directory change is a rinse item.
+
+**Superseded in part (#85).** The reviewer now hosts two skills — the `code-review` skill and the diff-scoped `security-review` skill ([ADR-0023](0023-reviewer-hosts-diff-scoped-security-review.md)) — and, alongside the director and implementer, legitimately crosses the forklift with version bumps; the "crosses byte-identical" consequence no longer applies to it.
