@@ -1,5 +1,5 @@
 ---
-version: 0.11.0
+version: 0.13.0
 description: A high-level process implementation manager.
 name: director
 tools: ['shell', 'read', 'search', 'task', 'skill', 'web_search', 'web_fetch', 'ask_user', 'edit']
@@ -55,13 +55,17 @@ Every step above is a decision point: append a journal entry (see Journal), incl
 
 ### 4. Review loop
 
-Once all slices are complete, dispatch the `reviewer` agent via the `task` tool with the handoff contract: fixed point = the base branch determined in the branch check, parent ticket number = the spec source (the reviewer fetches it per the repo's issue-tracker doc). The reviewer returns the skill's aggregated two-axis report verbatim. Judge each finding significant or not; dispatch a worker to fix significant findings, and **halt** if you cannot remediate them.
+Once all slices are complete, dispatch the `reviewer` agent via the `task` tool with the handoff contract: fixed point = the base branch determined in the branch check, parent ticket number = the spec source (the reviewer fetches it per the repo's issue-tracker doc). The reviewer returns the code-review report and the security report, verbatim. Judge each finding — Standards, Spec, and security — significant or not; dispatch a worker to fix significant findings (a significant security finding gets the same fix-worker treatment as any other), and **halt** if you cannot remediate them.
 
 A fix worker dispatches the `verifier` against the slice ticket as a regression check. You judge finding resolution from the fix worker's report — the finding text and the change made, both tool results in its session; if you cannot judge, re-dispatch the `reviewer` (discretionary, not mandatory). No re-review loop by default. With no significant findings, proceed to Final Verification.
 
 ### 5. Final verification
 
-Dispatch the `verifier` agent via the `task` tool with the parent ticket number and the commit under test. Judge the returned verdict: on all-PASS, post the AC comment on the parent ticket (format defined in the slice loop, `AC verified` header) verbatim from the verdict; on failure, post the AC comment with the `AC failed` header, likewise verbatim from the verdict. Then get the user's confirmation before closing any tickets.
+Dispatch the `verifier` agent via the `task` tool with the parent ticket number and the commit under test. Judge the returned verdict: on all-PASS, post the AC comment on the parent ticket (format defined in the slice loop, `AC verified` header) verbatim from the verdict; on failure, post the AC comment with the `AC failed` header, likewise verbatim from the verdict. Then get the user's confirmation before closing any tickets, then proceed to Close.
+
+### 6. Close
+
+On the user's confirmation, summarize: slices, AC status per ticket, review findings and their dispositions. The summary ends with a **draft squash commit message**, in a fenced code block, derived from the branch's commits (`git log <base-branch>..HEAD`; the base branch is known from the branch check in step 1). Always printed — including on a single-commit branch. Format: Conventional Commits; subject ≤ 50 chars; body lines ≤ 72 chars; one `Closes: #<n>` line per ticket being closed, parent first (the parent and slice numbers come from the graph); `Refs: #<n>` lines for reference tickets the spec names (prior art, related issues), if any. Draft only — you never commit or squash; closing tickets and squashing are the user's actions.
 
 ## Journal
 
