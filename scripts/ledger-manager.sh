@@ -47,8 +47,9 @@ EOF
 # ─── Manifest helpers ─────────────────────────────────────────────────────────
 
 # Print manifest entries as "source_path<TAB>target_path" lines. The target
-# path differs from the source path for the remember skill (deployed into the
-# target's .agents/skills/ so Copilot picks it up from the root) and the
+# path differs from the source path for the remember and daily-triage skills
+# (deployed into the target's .agents/skills/ so Copilot picks them up from
+# the root) and the
 # ticket-ledger agent (deployed into the target's .github/agents/ with the
 # .agent.md extension — Copilot CLI's project-level agent discovery location;
 # the workspace is a Copilot environment).
@@ -59,6 +60,7 @@ with open(sys.argv[1]) as f:
     m = json.load(f)
 remap = {
     "skills/remember/SKILL.md": ".agents/skills/remember/SKILL.md",
+    "skills/daily-triage/SKILL.md": ".agents/skills/daily-triage/SKILL.md",
     "agents/ticket-ledger.md": ".github/agents/ticket-ledger.agent.md",
 }
 for p in m["files"]:

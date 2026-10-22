@@ -1,8 +1,9 @@
 # Issue tracker: Local Markdown
 
-Tickets for this workspace live as markdown files under `tickets/`, in two
-namespaces: `tickets/engineering/` (system changes) and `tickets/research/`
-(ticket-driven investigations).
+Tickets for this workspace live as markdown files under `tickets/`, in three
+seeded namespaces: `tickets/engineering/` (system changes),
+`tickets/research/` (ticket-driven investigations), and `tickets/stubs/`
+(pre-commitment homes for work whose shape isn't known yet).
 
 ## Directory structure
 
@@ -19,6 +20,10 @@ tickets/
     00001-<investigation-slug>/
       spec.md
       slice-01-<slug>.md
+  stubs/
+    INDEX.md
+    00001-<stub-slug>/
+      spec.md
 ```
 
 ## Vocabulary
@@ -28,6 +33,9 @@ tickets/
   directory.
 - A **semantic ticket** is a parent ticket that concentrates an effort
   spanning external systems; its spec carries a `Refs:` line (see below).
+- A **stub** is a ticket in the `stubs` namespace with status `open` — a
+  pre-commitment home for work whose shape isn't known yet. A stub's done is a
+  decision — promote / cancel / resolve — not a completion.
 
 ## Conventions
 
@@ -42,7 +50,8 @@ tickets/
   hyphens; max 40 characters; no trailing hyphen.
 - **The INDEX is load-bearing.** Each namespace has an `INDEX.md`
   (number → slug → status). Every ticket creation and status change updates
-  it. Status vocabulary: `active / paused / done / abandoned`.
+  it. Status vocabulary: `active / paused / open / done / abandoned`
+  (`open` is stub-only — see the stub definition above).
 - **Create directories with plain `mkdir`** (not `mkdir -p`) when claiming a
   new number: if the directory exists, the command fails and you pick the
   next number. Never write into an existing number directory.
@@ -92,6 +101,17 @@ Refs: gh:owner/repo#678
   status is the local working view. A mismatch is reported, not reconciled.
 - `verify-ac` does not check external status — verification stays local.
   External checks are a separate, explicit action via `ado-boards`.
+
+## `Deferred until:` convention
+
+A `Deferred until: <YYYY-MM-DD>` line near the top of a ticket body parks the
+ticket: it leaves the daily sweep until its re-entry date, then re-enters the
+sweep on that date. The line stays in the body as provenance after re-entry —
+never delete it. A deferred ticket keeps its `paused` status; the line is what
+marks it as deferred, not the status.
+
+**Native ledger tickets only.** The field must not be written to external
+trackers (ADO/GitHub) — it is a local convention of this tracker.
 
 ## `Blocked by:` graph
 

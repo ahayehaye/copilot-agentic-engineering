@@ -10,11 +10,13 @@
     "docs/workflows.md",
     "tickets/engineering/INDEX.md",
     "tickets/research/INDEX.md",
+    "tickets/stubs/INDEX.md",
     "research/README.md",
     "research/index.md",
     "memories/README.md",
     "memories/index.md",
     "skills/remember/SKILL.md",
+    "skills/daily-triage/SKILL.md",
     "agents/ticket-ledger.md"
   ],
   "skill_check_list": [
