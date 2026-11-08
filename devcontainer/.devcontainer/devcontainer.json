@@ -1,0 +1,22 @@
+{
+  "name": "copilot-devcontainer",
+  "containerName": "copilot-dev",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "args": { "DEV_UID": "1000", "DEV_GID": "1000" }
+  },
+  "containerUser": "dev",
+  "workspaceFolder": "/workspaces/vscode/copilot-agentic-engineering",
+  "mounts": [
+    "source=/mnt/d/vbox/shared/vscode,target=/workspaces/vscode,type=bind",
+    "source=/home/alexh/.copilot,target=/home/dev/.copilot,type=bind",
+    "source=/home/alexh/.ssh,target=/home/dev/.ssh,type=bind",
+    "source=/home/alexh/.config/gh,target=/home/dev/.config/gh,type=bind"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": ["github.copilot"]
+    }
+  },
+  "postCreateCommand": "git config --global --add safe.directory '*' && ./devcontainer/preflight.sh container"
+}

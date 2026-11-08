@@ -14,6 +14,18 @@ Single-context repo — one `CONTEXT.md` and `docs/adr/` at the root. See `docs/
 
 When doing potentially risky or dangerous actions with the shell, always consult the shell-safety skill.
 
+## Credentials (hard rule)
+
+**Never commit credentials.** API keys, tokens, and passwords live in
+per-install, gitignored files or environment variables, never in committed
+templates, configs, or code. A committed file may name *where* a secret
+lives (a `.example` with a placeholder value) but never the value itself.
+
+Enforcement: `bash scripts/check-secrets.sh` scans staged changes for
+credential patterns (token prefixes, key/value pairs with real-looking
+values). Run it before every commit — a match blocks the commit until the
+secret moves to a gitignored file or env var.
+
 ## Testing
 
 - Unit tests for Python code are expected.

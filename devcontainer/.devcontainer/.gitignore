@@ -1,0 +1,3 @@
+# Per-machine overrides (uid, mount sources) — see README,
+# "Reproduce on a second machine".
+devcontainer.user.local.json
